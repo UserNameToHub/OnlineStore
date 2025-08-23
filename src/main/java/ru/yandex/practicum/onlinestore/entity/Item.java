@@ -1,16 +1,16 @@
 package ru.yandex.practicum.onlinestore.entity;
 
 import jakarta.persistence.*;
-import lombok.Data;
-import lombok.EqualsAndHashCode;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
 import java.math.BigDecimal;
 
 @Entity
-@Table(name = "items")
+@Table(name = "item")
 @Data
 @NoArgsConstructor
+@AllArgsConstructor
+@Builder
 @EqualsAndHashCode(of = "id")
 public class Item {
     @Id
@@ -23,9 +23,9 @@ public class Item {
     @Column(name = "description", nullable = false)
     private String description;
 
+    @Column(name = "ImagePath")
     private String imagePath;
 
-    @OneToMany
     private Integer count;
 
     @Column(name = "price", nullable = false)
