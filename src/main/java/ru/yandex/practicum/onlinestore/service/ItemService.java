@@ -13,5 +13,7 @@ import java.util.List;
 public interface ItemService extends BaseService<Long> {
     List<Item> getAll(String search, SortConstant sort, Integer pageSize, Integer pageNumber);
 
+    Item getById(Long id);
+
     void update(Long id, ActionConstant action);
 }
