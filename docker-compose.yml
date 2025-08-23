@@ -1,0 +1,30 @@
+version: '3.1'
+services:
+  dev-p:
+    build: /Users/aleksandrgineyka/Desktop/DEV_P
+    image: online-store-image
+    container_name: OnlineStore
+    ports:
+      - "8082:8082"
+    depends_on:
+      - stats-db
+    environment:
+      - DB_HOST=stats-db
+      - DB_PORT=5432
+
+  stats-db:
+    image: postgres:15
+    volumes:
+      - /var/lib/postgresql/data/
+    ports:
+      - "6541:5432"
+    environment:
+      - POSTGRES_DB=store
+      - POSTGRES_USER=postgres
+      - POSTGRES_PASSWORD=postgres
+
+        #  datasource:
+        #    driver-class-name: org.postgresql.Driver
+        #    url: jdbc:postgresql://localhost:5432/store
+      #    password: postgres
+      #    username: postgres
