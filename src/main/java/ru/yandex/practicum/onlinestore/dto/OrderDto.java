@@ -9,10 +9,10 @@ import java.util.List;
 
 @Data
 @Builder
-public class CartDto {
+public class OrderDto {
+    private Long id;
+
     private List<Item> items;
 
-    private BigDecimal total;
-
-    private Boolean isEmpty;
+    private BigDecimal totalSum;
 }
