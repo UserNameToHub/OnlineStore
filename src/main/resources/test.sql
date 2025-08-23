@@ -1,5 +1,4 @@
--- drop table order_item CASCADE;
-
+---- DDL
 CREATE TABLE IF NOT EXISTS item
 (
     Id BIGINT GENERATED ALWAYS AS IDENTITY PRIMARY KEY,
@@ -28,3 +27,16 @@ CREATE TABLE IF NOT EXISTS cart
     item_id  BIGINT REFERENCES item (id)  NOT NULL
 
 );
+
+---- DML
+insert into item (title, description, image_path, Price)
+values ('Iphone 16 126 black',
+        'iPhone 16 создан вместе с Apple Intelligence',
+        '/Users/aleksandrgineyka/Desktop/store/catalog/Iphone.jpg',
+        62000.00);
+
+insert into item (title, description, image_path, Price)
+values ('Iphone 16 256 black',
+        'iPhone 16 создан вместе с Apple Intelligence',
+        'image/Iphone.jpg',
+        82000.00);
