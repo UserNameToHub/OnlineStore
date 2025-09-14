@@ -4,6 +4,8 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import reactor.core.publisher.Flux;
+import reactor.core.publisher.Mono;
 import ru.yandex.practicum.onlinestore.dto.OrderDto;
 import ru.yandex.practicum.onlinestore.entity.Item;
 import ru.yandex.practicum.onlinestore.entity.Order;
@@ -28,29 +30,40 @@ public class OrderServiceImpl implements OrderService {
 
     @Override
     @Transactional
-    public Long save() {
-        List<Item> itemsInCar = cartRepository.findAll();
-        log.info("Количество товаров в корзине {]", itemsInCar.size());
-        Order order = Order.builder()
-                .items(itemsInCar)
-                .build();
-        Order savedOrder = orderRepository.save(order);
-        log.info("Заказ был сохранен");
-        return savedOrder.getId();
+    public Mono<Long> save() {
+//        List<Item> itemsInCar = cartRepository.findAll();
+//        log.info("Количество товаров в корзине {]", itemsInCar.size());
+//        Order order = Order.builder()
+//                .items(itemsInCar)
+//                .build();
+//        Order savedOrder = orderRepository.save(order);
+//        log.info("Заказ был сохранен");
+//        return savedOrder.getId();
+        return cartRepository.findAll()
+                .collectList()
+                .map(itemsInCar -> {
+                    log.info("Количество товаров в корзине: {}", itemsInCar.size());
+                    Order order = Order.builder()
+                            .items(itemsInCar)
+                            .build();
+                    return order;
+                })
+                .flatMap(orderRepository::save)
+                .doOnSuccess(savedOrder -> log.info("Заказ был сохранён"))
+                .map(Order::getId);
     }
 
     @Override
-    public OrderDto getById(Long id) {
+    public Mono<OrderDto> getById(Long id) {
         log.info("Получить заказ с id:: {}", id);
 
-        Order order = orderRepository.findById(id).orElse(new Order());
-        return orderDtoMapper.toDto(order);
+        return orderRepository.findById(id)
+                .map(orderDtoMapper::toDto);
     }
 
     @Override
-    public List<OrderDto> getAll() {
-        return orderRepository.findAll().stream()
-                .map(orderDtoMapper::toDto)
-                .collect(Collectors.toList());
+    public Flux<OrderDto> getAll() {
+        return orderRepository.findAll()
+                .map(orderDtoMapper::toDto);
     }
 }
