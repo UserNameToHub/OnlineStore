@@ -1,12 +1,12 @@
 package ru.yandex.practicum.onlinestore.entity;
 
-import jakarta.persistence.*;
 import lombok.*;
+import org.springframework.data.annotation.Id;
+import org.springframework.data.relational.core.mapping.Table;
 
 import java.math.BigDecimal;
 
-@Entity
-@Table(name = "item")
+@Table("item")
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
@@ -14,20 +14,15 @@ import java.math.BigDecimal;
 @EqualsAndHashCode(of = "id")
 public class Item {
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column(name = "title", nullable = false)
     private String title;
 
-    @Column(name = "description", nullable = false)
     private String description;
 
-    @Column(name = "ImagePath")
     private String imagePath;
 
     private Integer count;
 
-    @Column(name = "price", nullable = false)
     private BigDecimal price;
 }
