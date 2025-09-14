@@ -1,16 +1,13 @@
 package ru.yandex.practicum.onlinestore.entity;
 
-import jakarta.persistence.*;
+import org.springframework.data.annotation.Id;
+import org.springframework.data.relational.core.mapping.Table;
+import reactor.core.publisher.Flux;
 
-import java.util.List;
-
-@Entity
 @Table(name = "cart")
 public class Cart {
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @OneToMany
-    private List<Item> items;
+    private Flux<Item> items;
 }
