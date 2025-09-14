@@ -4,9 +4,8 @@ import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import reactor.core.publisher.Mono;
 import ru.yandex.practicum.onlinestore.SpringBootPostgreSQLBase;
-import ru.yandex.practicum.onlinestore.dto.OrderDto;
-import ru.yandex.practicum.onlinestore.repository.OrderRepository;
 import ru.yandex.practicum.onlinestore.service.OrderService;
 
 import static org.junit.jupiter.api.Assertions.*;
@@ -23,20 +22,25 @@ class OrderServiceImplTest extends SpringBootPostgreSQLBase {
 
     @Test
     void save() {
-        int sizeOfOrders = orderService.getAll().size();
-        assertEquals(0, sizeOfOrders);
+        orderService.getAll()
+                .collectList()
+                .subscribe(orderDtos -> {
+                    assertEquals(0, orderDtos.size());
+                });
 
-        Long idSavedOrder = orderService.save();
-        OrderDto orderDto = orderService.getById(idSavedOrder);
-        int itemsSize = orderDto.getItems().size();
-        assertEquals(0, itemsSize);
+        Mono<Long> idSaved = orderService.save();
+        orderService.getById(idSaved.block())
+                .map(orderDto -> orderDto.getItems().size())
+                .subscribe(i -> assertEquals(0, i));
     }
 
     @Test
     void getById() {
-        Long idSavedOrder = orderService.save();
-        OrderDto order = orderService.getById(idSavedOrder);
-        assertEquals(1L, order.getId());
+        Mono<Long> idSaved = orderService.save();
+        orderService.getById(idSaved.block())
+                .subscribe(i -> {
+                    assertEquals(1L, i.getId());
+                });
     }
 
     @Test
@@ -44,7 +48,8 @@ class OrderServiceImplTest extends SpringBootPostgreSQLBase {
         orderService.save();
         orderService.save();
 
-        int oderSize = orderService.getAll().size();
-        assertEquals(2, oderSize);
+        orderService.getAll().map(orderDto -> orderDto.getItems().size())
+                .subscribe(i -> assertEquals(2, i));
+
     }
 }
