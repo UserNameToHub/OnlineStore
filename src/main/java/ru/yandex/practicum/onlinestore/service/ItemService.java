@@ -1,5 +1,7 @@
 package ru.yandex.practicum.onlinestore.service;
 
+import reactor.core.publisher.Flux;
+import reactor.core.publisher.Mono;
 import ru.yandex.practicum.onlinestore.common.BaseService;
 import ru.yandex.practicum.onlinestore.entity.Item;
 import ru.yandex.practicum.onlinestore.enumiration.ActionConstant;
@@ -11,9 +13,9 @@ import java.util.List;
  *
  */
 public interface ItemService extends BaseService<Long> {
-    List<Item> getAll(String search, SortConstant sort, Integer pageSize, Integer pageNumber);
+    Flux<Item> getAll(String search, SortConstant sort, Integer pageSize, Integer pageNumber);
 
-    Item getById(Long id);
+    Mono<Item> getById(Long id);
 
-    void update(Long id, ActionConstant action);
+    Mono<Void> update(Long id, ActionConstant action);
 }

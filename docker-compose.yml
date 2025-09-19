@@ -22,9 +22,3 @@ services:
       - POSTGRES_DB=store
       - POSTGRES_USER=postgres
       - POSTGRES_PASSWORD=postgres
-
-        #  datasource:
-        #    driver-class-name: org.postgresql.Driver
-        #    url: jdbc:postgresql://localhost:5432/store
-      #    password: postgres
-      #    username: postgres

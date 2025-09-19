@@ -1,10 +1,12 @@
 package ru.yandex.practicum.onlinestore.service;
 
+import reactor.core.publisher.Flux;
+import reactor.core.publisher.Mono;
 import ru.yandex.practicum.onlinestore.dto.CartDto;
 import ru.yandex.practicum.onlinestore.enumiration.ActionConstant;
 
 public interface CartService {
-    CartDto getAll();
+    Mono<CartDto> getAll();
 
-    void update(Long id, ActionConstant action);
+    Mono<Void> update(Long id, ActionConstant action);
 }

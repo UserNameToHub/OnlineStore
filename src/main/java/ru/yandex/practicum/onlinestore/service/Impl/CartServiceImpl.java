@@ -4,6 +4,7 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import reactor.core.publisher.Mono;
 import ru.yandex.practicum.onlinestore.dto.CartDto;
 import ru.yandex.practicum.onlinestore.entity.Item;
 import ru.yandex.practicum.onlinestore.enumiration.ActionConstant;
@@ -26,17 +27,17 @@ public class CartServiceImpl implements CartService {
     private final ItemService itemService;
 
     @Override
-    public CartDto getAll() {
-        List<Item> items = cartRepository.findAll();
-        log.info("Обновление товара в корзине");
-
-        return cartDtoMapper.toDto(items);
+    public Mono<CartDto> getAll() {
+        return cartRepository.findAll()
+                .collectList()
+                .map(cartDtoMapper::toDto)
+                .doOnSuccess(dto -> log.info("Обновление товара в корзине"));
     }
 
     @Override
     @Transactional
-    public void update(Long id, ActionConstant action) {
+    public Mono<Void> update(Long id, ActionConstant action) {
         log.info("Попытка обновить товар с id {}", id);
-        itemService.update(id, action);
+        return itemService.update(id, action);
     }
 }

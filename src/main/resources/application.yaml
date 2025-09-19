@@ -2,23 +2,14 @@ spring:
   application:
     name: OnlineStore
 
-#  datasource:
-#    driver-class-name: org.postgresql.Driver
-#    url: jdbc:postgresql://localhost:5432/store
-#    password: postgres
-#    username: postgres
-
-    datasource:
-      driver-class-name: org.postgresql.Driver
-      url: jdbc:postgresql://${DB_HOST}:${DB_PORT}/${DB_NAME}
-      username: ${POSTGRES_USER}
-      password: ${POSTGRES_PASSWORD}
-
-      environment:
-        - POSTGRES_DB=stats
-        - POSTGRES_USER=root
-        - POSTGRES_PASSWORD=root
-
-path:
-  to:
-    dir: C:/store/uploads/
+  r2dbc:
+    url: r2dbc:postgresql://${DB_HOST}:${DB_PORT}/${DB_NAME}
+    username: ${POSTGRES_USER}
+    password: ${POSTGRES_PASSWORD}
+    pool:
+      enabled: true                               # Включение пула соединений
+      initial-size: 10                            # Начальное количество соединений в пуле
+      max-size: 50                                # Максимальное количество соединений
+      max-idle-time: 30s                          # Время бездействия соединения перед закрытием
+      max-life-time: 10m                          # Максимальное время жизни соединения
+      validation-query: SELECT 1
