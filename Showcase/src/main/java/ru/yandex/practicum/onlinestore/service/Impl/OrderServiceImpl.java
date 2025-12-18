@@ -2,6 +2,7 @@ package ru.yandex.practicum.onlinestore.service.Impl;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import reactor.core.publisher.Flux;
@@ -31,14 +32,6 @@ public class OrderServiceImpl implements OrderService {
     @Override
     @Transactional
     public Mono<Long> save() {
-//        List<Item> itemsInCar = cartRepository.findAll();
-//        log.info("Количество товаров в корзине {]", itemsInCar.size());
-//        Order order = Order.builder()
-//                .items(itemsInCar)
-//                .build();
-//        Order savedOrder = orderRepository.save(order);
-//        log.info("Заказ был сохранен");
-//        return savedOrder.getId();
         return cartRepository.findAll()
                 .collectList()
                 .map(itemsInCar -> {
@@ -54,6 +47,10 @@ public class OrderServiceImpl implements OrderService {
     }
 
     @Override
+    @Cacheable(
+            value = "order",
+            key = "#id"
+    )
     public Mono<OrderDto> getById(Long id) {
         log.info("Получить заказ с id:: {}", id);
 
@@ -62,6 +59,10 @@ public class OrderServiceImpl implements OrderService {
     }
 
     @Override
+    @Cacheable(
+            value = "order",
+            key = "'all'"
+    )
     public Flux<OrderDto> getAll() {
         return orderRepository.findAll()
                 .map(orderDtoMapper::toDto);

@@ -2,6 +2,7 @@ package ru.yandex.practicum.onlinestore.service.Impl;
 
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
@@ -42,9 +43,12 @@ public class ItemServiceImpl implements ItemService {
     }
 
     @Override
+    @Cacheable(
+            value = "item",
+            key = "#id"
+    )
     public Mono<Item> getById(Long id) {
         return itemRepository.findById(id);
-//        return itemRepository.findById(id).orElse(null);
     }
 
     @Override

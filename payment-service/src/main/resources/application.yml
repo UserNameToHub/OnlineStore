@@ -1,6 +1,15 @@
+server:
+  port: 9091
+
 spring:
   application:
-    name: OnlineStore
+    name: payment-service
+
+#  rabbitmq:
+#    username: ${RABBITMQ_DEFAULT_USER}
+#    password: ${RABBITMQ_DEFAULT_PASS}
+#    host: localhost
+#    virtualHost: ${RABBITMQ_VIRTUAL_HOST}
 
   r2dbc:
     url: r2dbc:postgresql://${DB_HOST}:${DB_PORT}/${DB_NAME}

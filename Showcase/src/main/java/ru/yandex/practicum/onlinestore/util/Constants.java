@@ -8,4 +8,6 @@ public class Constants {
     public static final Sort SORT_BY_PRICE = Sort.by(Sort.Direction.ASC, "price");
 
     public static final Sort SORT_BY_ALPHA = Sort.by(Sort.Direction.ASC, "title");
+
+    public static final String MESSAGE = "Недостаточно средств для покупки товаров в корзине";
 }

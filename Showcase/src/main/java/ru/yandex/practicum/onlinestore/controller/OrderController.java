@@ -8,12 +8,17 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import reactor.core.publisher.Mono;
+import ru.yandex.practicum.onlinestore.client.StoreClient;
 import ru.yandex.practicum.onlinestore.service.OrderService;
+
+import java.math.BigDecimal;
 
 @Controller("/orders")
 @RequiredArgsConstructor
 public class OrderController {
     private final OrderService orderService;
+
+    private final StoreClient client;
 
     @GetMapping("/orders")
     public Mono<String> getAll(Model model) {
@@ -33,11 +38,5 @@ public class OrderController {
                     model.addAttribute("newOrder", newOrder);
                     return "order";
                 });
-    }
-
-    @PostMapping("/buy")
-    public Mono<String> create() {
-        return orderService.save()
-                .map(orderId -> String.format("redirect:/orders/%d?newOrder=true", orderId));
     }
 }

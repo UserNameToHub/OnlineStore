@@ -2,18 +2,16 @@ package ru.yandex.practicum.onlinestore.service.Impl;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import reactor.core.publisher.Mono;
 import ru.yandex.practicum.onlinestore.dto.CartDto;
-import ru.yandex.practicum.onlinestore.entity.Item;
 import ru.yandex.practicum.onlinestore.enumiration.ActionConstant;
 import ru.yandex.practicum.onlinestore.mapper.CartDtoMapper;
 import ru.yandex.practicum.onlinestore.repository.CartRepository;
 import ru.yandex.practicum.onlinestore.service.CartService;
 import ru.yandex.practicum.onlinestore.service.ItemService;
-
-import java.util.List;
 
 @Slf4j
 @Service
@@ -27,6 +25,10 @@ public class CartServiceImpl implements CartService {
     private final ItemService itemService;
 
     @Override
+    @Cacheable(
+            value = "cart",
+            key = "'all'"
+    )
     public Mono<CartDto> getAll() {
         return cartRepository.findAll()
                 .collectList()
