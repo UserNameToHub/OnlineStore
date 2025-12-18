@@ -1,0 +1,79 @@
+openapi: 3.0.1
+info:
+  title: API сервиса платежей
+  version: 1.0.0
+paths:
+  /deposit:
+    put:
+      operationId: topUpDeposit
+      summary: Пополнить счет
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Amount'
+      responses:
+        '204':
+          description: Успешный запрос
+
+
+  /{id}/pay:
+    post:
+      operationId: isPositive
+      summary: Совершить покупку
+      parameters:
+        - $ref: '#/components/parameters/UserId'
+        - $ref: '#/components/parameters/Amount'
+      responses:
+        '200':
+          description: Успешный запрос
+          content:
+            application/json:
+              schema:
+                type: boolean
+
+components:
+  schemas:
+    Amount:
+      type: object
+#      required:
+#        - userId
+#        - amount
+      properties:
+        id:
+          type: integer
+          format: int64
+          description: Уникальный идентификатор пользователя
+        amount:
+          type: string
+          format: decimal
+          description: сумма
+
+  parameters:
+    UserId:
+      name: userId
+      in: path
+      description: Идентификатор пользователя
+      required: true
+      schema:
+        type: integer
+        format: int64
+
+    Amount:
+      name: amount
+      in: query
+      description: Сумма
+      required: true
+      schema:
+        type: number
+        format: decimal
+        default: 0.0
+
+  requestBodies:
+    CreateUser:
+      description: Данные для пополнения счета
+      required: true
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Amount'
