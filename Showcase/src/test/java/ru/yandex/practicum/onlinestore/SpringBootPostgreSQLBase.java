@@ -4,6 +4,7 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.DynamicPropertyRegistry;
 import org.springframework.test.context.DynamicPropertySource;
+import org.testcontainers.containers.PostgreSQLContainer;
 
 @SpringBootTest
 @ActiveProfiles("test")
@@ -15,7 +16,7 @@ public abstract class SpringBootPostgreSQLBase {
                 .withDatabaseName("testdb")
                 .withUsername("admin")
                 .withPassword("admin")
-                .withInitScript("test.sql")
+                .withInitScript("src/main/resources/test.sql")
                 .withExposedPorts(5432);
 
         postgres.start();
