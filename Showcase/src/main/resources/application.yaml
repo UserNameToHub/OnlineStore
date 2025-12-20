@@ -15,7 +15,7 @@ spring:
       validation-query: SELECT 1
 
   payment:
-    url: ${PAYMENT_SERVER_URL}}
+    url: ${PAYMENT_SERVER_URL}
 #  rabbitmq:
 #    username: ${RABBITMQ_DEFAULT_USER}
 #    password: ${RABBITMQ_DEFAULT_PASS}
