@@ -18,4 +18,9 @@ public class ClientConfiguration {
     RestTemplate paymentRestTemplate() {
         return new RestTemplateBuilder().rootUri(url).build();
     }
+
+    @Bean
+     StoreClient storeClient(RestTemplate restTemplate) {
+        return new StoreClient(restTemplate);
+    }
 }
