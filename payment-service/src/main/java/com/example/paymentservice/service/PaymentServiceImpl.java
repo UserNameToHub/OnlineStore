@@ -1,6 +1,5 @@
 package com.example.paymentservice.service;
 
-import com.example.paymentservice.dto.BalanceDto;
 import com.example.paymentservice.entity.Balance;
 import com.example.paymentservice.mapping.BalanceMapping;
 import com.example.paymentservice.repository.PaymentRepository;

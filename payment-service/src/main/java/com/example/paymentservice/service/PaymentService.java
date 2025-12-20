@@ -1,6 +1,5 @@
 package com.example.paymentservice.service;
 
-import com.example.paymentservice.dto.BalanceDto;
 import reactor.core.publisher.Mono;
 
 import java.math.BigDecimal;

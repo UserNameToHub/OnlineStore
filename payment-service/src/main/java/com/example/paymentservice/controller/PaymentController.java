@@ -1,7 +1,7 @@
 package com.example.paymentservice.controller;
 
-import com.example.paymentservice.dto.BalanceDto;
 import com.example.paymentservice.service.PaymentService;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
 import reactor.core.publisher.Mono;
@@ -15,8 +15,8 @@ public class PaymentController {
     private final PaymentService paymentService;
 
     @PostMapping("/deposit")
-    public void toUpDeposit(@RequestBody BalanceDto balanceDto) {
-
+    public void toUpDeposit(@RequestBody @Valid BalanceDto balanceDto) {
+        paymentService.save(balanceDto);
     }
 
     @PostMapping("/pay/{id}?amount")
