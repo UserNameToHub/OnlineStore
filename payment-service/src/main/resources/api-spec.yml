@@ -11,7 +11,7 @@ paths:
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/Amount'
+              $ref: '#/components/schemas/BalanceDto'
       responses:
         '204':
           description: Успешный запрос
@@ -34,11 +34,11 @@ paths:
 
 components:
   schemas:
-    Amount:
+    BalanceDto:
       type: object
-#      required:
-#        - userId
-#        - amount
+      required:
+        - userId
+        - amount
       properties:
         id:
           type: integer
@@ -65,15 +65,15 @@ components:
       description: Сумма
       required: true
       schema:
-        type: number
+        type: string
         format: decimal
         default: 0.0
 
-  requestBodies:
-    CreateUser:
-      description: Данные для пополнения счета
-      required: true
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/Amount'
+#  requestBodies:
+#    CreateUser:
+#      description: Данные для пополнения счета
+#      required: true
+#      content:
+#        application/json:
+#          schema:
+#            $ref: '#/components/schemas/Amount'
