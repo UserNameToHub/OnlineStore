@@ -1,0 +1,24 @@
+server:
+  port: 9091
+
+spring:
+  application:
+    name: payment-service
+
+#  rabbitmq:
+#    username: ${RABBITMQ_DEFAULT_USER}
+#    password: ${RABBITMQ_DEFAULT_PASS}
+#    host: localhost
+#    virtualHost: ${RABBITMQ_VIRTUAL_HOST}
+
+  r2dbc:
+    url: r2dbc:postgresql://${DB_HOST}:${DB_PORT}/${DB_NAME}
+    username: ${POSTGRES_USER}
+    password: ${POSTGRES_PASSWORD}
+    pool:
+      enabled: true                               # Включение пула соединений
+      initial-size: 10                            # Начальное количество соединений в пуле
+      max-size: 50                                # Максимальное количество соединений
+      max-idle-time: 30s                          # Время бездействия соединения перед закрытием
+      max-life-time: 10m                          # Максимальное время жизни соединения
+      validation-query: SELECT 1

@@ -1,24 +1,77 @@
 version: '3.1'
 services:
-  dev-p:
-    build: /Users/aleksandrgineyka/Desktop/DEV_P
+  showcase:
+    build: /Users/aleksandrgineyka/Desktop/DEV_P/Showcase/Dockerfile
     image: online-store-image
-    container_name: OnlineStore
+    container_name: showcase
     ports:
-      - "8082:8082"
+      - "8083:8083"
     depends_on:
-      - stats-db
+      - showcase-db
+      - payment-server
+      - redis-db
     environment:
-      - DB_HOST=stats-db
-      - DB_PORT=5432
+      - DB_NAME=showcase
+      - DB_HOST=showcase-db
+      - DB_PORT=6541
+      - POSTGRES_USER=root
+        POSTGRES_PASSWORD=root
+      - PAYMENT_SERVER_PORT=9091
+      - PAYMENT_SERVER_URL=http://payment-server:9091
+      - REDIS_HOST=redis-db
+      - REDIS_PORT=6379
 
-  stats-db:
+  payment-server:
+    build: /Users/aleksandrgineyka/Desktop/DEV_P/payment-service/Dockerfile
+    image: payment-image
+    container_name: payment
+    ports:
+      - "9091:9091"
+    depends_on:
+      - payment-db
+    environment:
+      - DB_NAME=payment
+      - DB_HOST=payment-db
+      - DB_PORT=65426542
+      - POSTGRES_USER=root
+      - POSTGRES_PASSWORD=root
+
+  showcase-db:
     image: postgres:15
     volumes:
       - /var/lib/postgresql/data/
     ports:
       - "6541:5432"
     environment:
-      - POSTGRES_DB=store
-      - POSTGRES_USER=postgres
-      - POSTGRES_PASSWORD=postgres
+      - POSTGRES_DB=showcase
+      - POSTGRES_USER=root
+      - POSTGRES_PASSWORD=root
+
+  payment-db:
+    image: postgres:14-alpine
+    volumes:
+      - /var/lib/postgresql/data/
+    ports:
+      - "6542:5432"
+    environment:
+      - POSTGRES_DB=payment
+      - POSTGRES_USER=root
+      - POSTGRES_PASSWORD=root
+
+  redis-db:
+    image: redis:latest
+    ports:
+      - "6379:6379"
+
+# http://localhost:15672/#/exchanges адврес
+#  rabbitmq:
+#    image: rabbitmq:4.0-management
+#    container_name: rabbitmq
+#    ports:
+#       - "5672:5672"
+#       - "15672:15672"
+#    restart: always
+#    environment:
+#      - RABBITMQ_DEFAULT_USER=user
+#      - RABBITMQ_DEFAULT_PASS=password
+##      - RABBITMQ_VIRTUAL_HOST=prod
