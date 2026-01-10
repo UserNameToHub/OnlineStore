@@ -1,6 +1,7 @@
 package ru.yandex.practicum.onlinestore.controller;
 
 import lombok.RequiredArgsConstructor;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
@@ -22,6 +23,7 @@ public class ItemController {
     }
 
     @PostMapping
+    @PreAuthorize("hasRole('ADMIN')")
     public Mono<String> create(@PathVariable("id") Long id, @RequestParam(value = "action") String action) {
         return itemService.update(id, Util.getAction(action))
                 .thenReturn("redirect:/items/" + id);

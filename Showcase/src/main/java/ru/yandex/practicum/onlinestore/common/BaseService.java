@@ -8,4 +8,5 @@ import reactor.core.publisher.Mono;
  */
 public interface BaseService<ID> {
     Mono<Boolean> existsById(ID id);
+
 }

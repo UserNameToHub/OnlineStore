@@ -5,6 +5,12 @@ spring:
   application:
     name: payment-service
 
+  security:
+    oauth2:
+      resourceserver:
+        jwt:
+          issuer-uri: http://localhost:8080/realms/master
+
 #  rabbitmq:
 #    username: ${RABBITMQ_DEFAULT_USER}
 #    password: ${RABBITMQ_DEFAULT_PASS}
