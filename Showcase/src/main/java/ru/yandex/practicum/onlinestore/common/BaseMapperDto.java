@@ -6,5 +6,11 @@ package ru.yandex.practicum.onlinestore.common;
  * @param <T2> - dto
  */
 public interface BaseMapperDto<T1, T2> {
-    T2 toDto(T1 entity);
+    default T2 toDto(T1 entity) {
+        return null;
+    }
+
+    default T1 toEntity(T2 dto) {
+        return null;
+    }
 }
